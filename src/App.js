@@ -12,6 +12,7 @@ import {
 } from "react-router-dom";
 
 function App() {
+  
   const [mode, setMode] = useState('light');
   const [alert, setAlert] = useState(null);
 
@@ -21,37 +22,38 @@ function App() {
       type: type
     });
     setTimeout(() => {
-      setAlert(null);
+      setAlert(null); 
     }, 1500);
   };
 
-  const [label, setLabel] = useState('enable light mode');
+  const [label, setLabel] = useState('enable Dark mode');
 
   const toggleMode = () => {
     if (mode === 'light') {
       setMode('dark');
-      setLabel('enable white mode');
+      setLabel('enable Light mode');
       document.body.style.backgroundColor = '#042743';
       showAlert('Dark mode has been enabled', 'success');
-      document.title = 'TextUtils-Dark mode';
+      // document.title = 'TextUtils-Dark mode';
     } else {
       setMode('light');
-      setLabel('enable dark mode');
+      setLabel('enable Dark mode');
       document.body.style.backgroundColor = 'white';
       showAlert('Light mode has been enabled', 'success');
-      document.title = 'TextUtils-Light mode';
+      // document.title = 'TextUtils-Light mode';
     }
   };
 
   return (
     <>
+      
       <Router>
-        <Navbar title="Textutils" toggleMode={toggleMode} label={label} mode={mode} />
+        <Navbar title="TextUtils" toggleMode={toggleMode} label={label} mode={mode} />
         <Alert alert={alert} />
         <div className="container my-3">
           <Routes>
-            <Route path="/about" element={<About />} />
-            <Route path="/" element={<Textform showAlert={showAlert} heading='Enter the text to analyze' mode={mode} />} />
+            <Route path="/about" element={<About mode={mode} />} />
+            <Route path="/" element={<Textform showAlert={showAlert} heading='Try TextUtils - Word Counter, Character counter' mode={mode} />} />
           </Routes>
         </div>
       </Router>

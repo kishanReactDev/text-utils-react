@@ -76,35 +76,35 @@ export default function Textform(props) {
 
   const wordcounter = () => {
 
-    let a= text.split(' ')
-    
+    let a = text.split(/\s+/)
+
     let filteredArray = a.filter(element => element !== '');
 
-    return filteredArray.length
-   
+    return filteredArray.length;
+
 
   }
-
-
-  const charactercounter = ()=>{
-
-    let a =text.split('')
-    console.log(a);
-    
-    
-    let characters = a.filter(element => element !== ' ');  
-
+  const charactercounter = (text) => {
+    let characters = text.split('').filter(element => !/\s/.test(element));
     return characters.length;
-    
+}
 
-  }
-
+const handlecopy = ()=>{
+  navigator.clipboard.writeText(text);
+  props.showAlert("Copied to Clipboard","success");
+}
+const handleExtraspaces = () => {
+  let a=text.trim();
+  let newText = a.split(/\s+/);
+  setText(newText.join(' '));
+  props.showAlert("Extra spaces removed", "success");
+}
 
   const [text, setText] = useState("");
   return (
     <>
       <div style={{ color: props.mode === 'dark' ? 'white' : 'black' }}>
-        <h1>{props.heading}</h1>
+        <h1 className="mb-4">{props.heading}</h1>
         <div className="mb-3">
           <textarea
             className="form-control"
@@ -112,34 +112,40 @@ export default function Textform(props) {
             onChange={handleonchange}
             id="mybox"
             rows="8"
-            style={{ backgroundColor: props.mode === 'dark' ? 'grey' : 'white', color: props.mode === 'dark' ? 'white' : 'black' }}
+            style={{ backgroundColor: props.mode === 'dark' ? '#13466e      ' : 'white', color: props.mode === 'dark' ? 'white' : 'black' }}
           ></textarea>
         </div>
 
-        <button className="btn btn-primary mx-2 my-1  " onClick={handleupclick}>
+        <button disabled={text.length === 0} className="btn btn-primary mx-2 my-1  " onClick={handleupclick}>
           Convert to Uppercase
         </button>
-        <button className="btn btn-primary mx-2 my-1  " onClick={handleloclick}>
+        <button disabled={text.length === 0} className="btn btn-primary mx-2 my-1  " onClick={handleloclick}>
           Convert to Lowercase
         </button>
-        <button className="btn btn-primary mx-2 my-1  " onClick={handleclearclick}>
+        <button disabled={text.length === 0} className="btn btn-primary mx-2 my-1  " onClick={handleclearclick}>
           Clear Text
         </button>
-        <button className="btn btn-primary mx-2 my-1  " onClick={inversetext}>
+        <button disabled={text.length === 0} className="btn btn-primary mx-2 my-1  " onClick={inversetext}>
           inverse Text
         </button>
-        <button className="btn btn-primary mx-2 my-1  " onClick={inverseword}>
+        <button disabled={text.length === 0} className="btn btn-primary mx-2 my-1  " onClick={handlecopy}>
+          Copy Text
+        </button>
+        <button disabled={text.length === 0} className="btn btn-primary mx-2 my-1  " onClick={handleExtraspaces}>
+          Remove extra spaces
+        </button>
+        <button disabled={text.length === 0} className="btn btn-primary mx-2 my-1  " onClick={inverseword}>
           inverse alternative
         </button>
       </div>
       <div className="container my-2" style={{ color: props.mode === 'dark' ? 'white' : 'black' }}>
         <h2>Your text summary</h2>
         <p>
-          {wordcounter()} words and {charactercounter()} characters
+          {wordcounter()} words and {charactercounter(text)} characters
         </p>
-        <p>{0.008 * text.split(" ").length} minitues read</p>
+        <p>{0.008 * text.split(/\s+/).filter((element) => { return element.length !== 0 }).length} minitues read</p>
         <h2>preview</h2>
-        <p>{text.length > 0 ? text : "enter somthing in the above textbox to preview it here"}</p>
+        <p>{text.length > 0 ? text : "Nothing to preview!"}</p>
       </div>
     </>
   );
