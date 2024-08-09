@@ -100,7 +100,7 @@ const handleExtraspaces = () => {
   props.showAlert("Extra spaces removed", "success");
 }
 
-  const [text, setText] = useState("");
+  const [text, setText] = useState("hi this is test demo");
   return (
     <>
       <div style={{ color: props.mode === 'dark' ? 'white' : 'black' }}>
